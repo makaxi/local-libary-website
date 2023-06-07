@@ -9,6 +9,23 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
+require('dotenv').config();
+const user = process.env.MONGO_DB_USER;
+const pw = process.env.MONGO_DB_PASSWORD;
+
+
+//Set up mongoose connection
+console.log("Attempting to connect to MongoDB");
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+const mongoDB = "mongodb+srv://" + user + ":" + pw + "@cluster0.qe7mdxz.mongodb.net/local_library?retryWrites=true&w=majority";
+
+main().catch((err) => console.log(err));
+async function main(){
+  await mongoose.connect(mongoDB);
+  console.log("Connected!");
+}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
